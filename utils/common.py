@@ -23,7 +23,7 @@ from projects.models import Projects
 from configures.models import Configures
 
 logger = logging.getLogger('test')
-# 121
+# 1212
 os.environ[
     "PATH"] += os.pathsep + r'C:\Users\dell\PycharmProjects\DeployDjango\django_app_docker\DjangoDev03\venv\Scripts'
 
