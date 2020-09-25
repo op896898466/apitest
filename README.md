@@ -19,5 +19,30 @@ mock管理：mock数据按接口-场景的层级管理，均支持独立启/禁�
 
 测试报告：支持筛选/检索测试结果，简洁地展示任务情况
 
-# 备注
+
+目录中apitest_vue为前端代码，其他为后端代码
+
+后端运行：
+
+配置完数据库后，cmd进入项目根目录
+
+pip install -r requirements.txt
+
+python manage.py makemigrations
+
+python manage.py migrate 
+
+python manage.py createsuperuser
+
+python manage.py runserver 0.0.0.0:8000
+
+前端运行：
+
+安装VUE环境，下载node.js并配置环境，下载npm包管理器，cmd进入前端目录
+
+npm install --global vue-cli
+
+npm install
+
+npm run dev
 
