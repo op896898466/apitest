@@ -15,4 +15,3 @@ urlpatterns = [
     re_path(r'^(?P<email>[A-Za-z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9_-]+)/count/$',
             views.EmailValidateView.as_view(), name='check_email'),
 ]
-

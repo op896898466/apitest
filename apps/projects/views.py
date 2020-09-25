@@ -13,7 +13,7 @@ from rest_framework import status
 from . import serializers
 from .models import Projects
 from .utils import get_count_by_project
-from interfaces.models import Interfaces
+from modules.models import Modules
 from testcases.models import Testcases
 from envs.models import Envs
 from utils import common
@@ -44,7 +44,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     names:
     获取所有的项目名和项目ID
 
-    interfaces:
+    modules:
     获取某个项目下的所有接口信息
 
     """
@@ -85,9 +85,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=True)
     def testcases(self, request, pk=None):
         """
-        Returns a list of all the testcases names by interface id
+        Returns a list of all the testcases names by module id
         """
-        testcase_objs = Testcases.objects.filter(interface__in=Interfaces.objects.filter(project_id=pk))
+        testcase_objs = Testcases.objects.filter(module__in=Modules.objects.filter(project_id=pk))
         one_list = []
         for obj in testcase_objs:
             one_list.append({
@@ -97,10 +97,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return Response(data=one_list)
 
     @action(detail=True)
-    def interfaces(self, request, pk=None):
-        interface_obj = Interfaces.objects.filter(project_id=pk)
+    def modules(self, request, pk=None):
+        module_obj = Modules.objects.filter(project_id=pk)
         one_list = []
-        for obj in interface_obj:
+        for obj in module_obj:
             one_list.append({
                 "id": obj.id,
                 "name": obj.name
@@ -122,21 +122,21 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if not os.path.exists(testcase_dir_path):
             os.mkdir(testcase_dir_path)
 
-        interface_objs = Interfaces.objects.filter(project=instance)
-        if not interface_objs.exists():  # 如果此项目下没有接口, 则无法运行
+            module_objs = Modules.objects.filter(project=instance)
+        if not module_objs.exists():  # 如果此项目下没有接口, 则无法运行
             data_dict = {
-                "detail": "此项目下无接口, 无法运行!"
+                "msg": "此项目下无接口, 无法运行!"
             }
             return Response(data_dict, status=status.HTTP_400_BAD_REQUEST)
 
-        for inter_obj in interface_objs:
-            testcase_objs = Testcases.objects.filter(interface=inter_obj)
+        for inter_obj in module_objs:
+            testcase_objs = Testcases.objects.filter(module=inter_obj)
 
             for one_obj in testcase_objs:
                 common.generate_testcase_files(one_obj, env, testcase_dir_path)
 
         # 运行用例
-        return common.run_testcase(instance, testcase_dir_path)
+        return common.run_testcase(instance, testcase_dir_path, request.data.get('is_email'), email=request.user.email)
 
     def get_serializer_class(self):
         """

@@ -44,7 +44,7 @@ class DebugTalksViewSet(ModelViewSet):
     @action(methods=['get'], detail=False)
     def names(self, request):
         """
-        Returns a list of all the testcases names by interface id
+        Returns a list of all the testcases names by module id
         """
         debugtalks_objs = DebugTalks.objects.all()
         one_list = []

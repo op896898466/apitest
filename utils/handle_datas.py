@@ -98,20 +98,21 @@ def handle_data2(datas):
     if datas is not None:
         for one_var_dict in datas:
             key = list(one_var_dict)[0]
-            value = one_var_dict.get(key)
-            # if isinstance(value, int):
-            #     param_type = "int"
-            # elif isinstance(value, float):
-            #     param_type = "float"
-            # elif isinstance(value, bool):
-            #     param_type = "boolean"
-            # else:
-            #     param_type = "string"
-            result_list.append({
-                "key": key,
-                "value": value,
-                "param_type": handle_param_type(value)
-            })
+            if "file" not in key:
+                value = one_var_dict.get(key)
+                # if isinstance(value, int):
+                #     param_type = "int"
+                # elif isinstance(value, float):
+                #     param_type = "float"
+                # elif isinstance(value, bool):
+                #     param_type = "boolean"
+                # else:
+                #     param_type = "string"
+                result_list.append({
+                    "key": key,
+                    "value": value,
+                    "param_type": handle_param_type(value)
+                })
 
     return result_list
 

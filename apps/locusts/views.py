@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from rest_framework.decorators import action
@@ -60,7 +61,7 @@ class LocustsViewSet(ModelViewSet):
                                                                                                       include)]
         return response
 
-    @action(methods=['get'], detail=False)
+    @action(methods=['post'], detail=False)
     def kill(self, request):
         if "win" in sys.platform:
             taskinfo = os.popen('netstat -ano | findstr 8089')
@@ -73,6 +74,17 @@ class LocustsViewSet(ModelViewSet):
                     pid = aList[4]
                     if pid:
                         os.popen('taskkill /pid %s /f' % pid)
+        elif "linux" in sys.platform:
+            taskinfo = os.popen('lsof -i:8089')
+            lines = taskinfo.read()
+            line_list = lines.split("\n")
+            for line in line_list:
+                aList = line.split()
+                taskinfo.close()
+                if aList:
+                    pid = aList[1]
+                    if pid:
+                        os.popen('kill -9 %s' % pid)
 
         data_dict = {
             "msg": "已解除端口占用"
@@ -84,8 +96,8 @@ class LocustsViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
-        datas = serializer.validated_data
-        env_id = datas.get('env_id')  # 获取环境变量env_id
+        data = serializer.validated_data
+        env_id = data.get('env_id')  # 获取环境变量env_id
         env = Envs.objects.get(id=env_id)
         testcase_objs = Testcases.objects.filter(id__in=eval(instance.include))
         if not testcase_objs.exists():  # 如果此接口下没有用例, 则无法运行
@@ -94,7 +106,24 @@ class LocustsViewSet(ModelViewSet):
             }
             return Response(data_dict, status=status.HTTP_400_BAD_REQUEST)
 
-        return common.is_locust(datas, env, testcase_objs)
+        return common.is_locust(request.data, env, testcase_objs)
+
+    @action(methods=['post'], detail=True)
+    def run_noweb(self, request, pk=None):
+        instance = self.get_object()
+        data = request.data
+        data["name"] = instance.name
+        data["email"] = request.user.email
+        env_id = data.get('env_id')  # 获取环境变量env_id
+        env = Envs.objects.get(id=env_id)
+        testcase_objs = Testcases.objects.filter(id__in=eval(instance.include))
+        if not testcase_objs.exists():  # 如果此接口下没有用例, 则无法运行
+            data_dict = {
+                "msg": "此压测接口下无用例, 无法运行!"
+            }
+            return Response(data_dict, status=status.HTTP_400_BAD_REQUEST)
+
+        return common.is_locust_noweb(data, env, testcase_objs)
 
     def get_serializer_class(self):
         """

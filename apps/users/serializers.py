@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-  @Time : 2020/1/9 20:48 
-  @Auth : 可优
-  @File : serializers.py
-  @IDE  : PyCharm
-  @Motto: ABC(Always Be Coding)
-  @Email: keyou100@qq.com
-  @Company: 湖南省零檬信息技术有限公司
-  @Copyright: 柠檬班
--------------------------------------------------
-"""
+
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers

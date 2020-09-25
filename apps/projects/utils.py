@@ -1,21 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-  @Time : 2020/1/16 21:43 
-  @Auth : 可优
-  @File : utils.py
-  @IDE  : PyCharm
-  @Motto: ABC(Always Be Coding)
-  @Email: keyou100@qq.com
-  @Company: 湖南省零檬信息技术有限公司
-  @Copyright: 柠檬班
--------------------------------------------------
-"""
+
 from django.db.models import Count
 from  projects.models import Projects
-from interfaces.models import Interfaces
+from modules.models import Modules
 from testcases.models import Testcases
-from testsuits.models import Testsuits
+from testsuites.models import Testsuites
 
 
 
@@ -36,22 +25,22 @@ def get_count_by_project(datas):
 
         # 获取项目id值
         project_id = item['id']
-        interfaces_testcases_objs = Interfaces.objects.values('id').annotate(testcases=Count('testcases')).\
+        modules_testcases_objs = Modules.objects.values('id').annotate(testcases=Count('testcases')).\
             filter(project_id=project_id)
-        # 获取接口总数
-        interfaces_count = interfaces_testcases_objs.count()
+        # 获取模块总数
+
+        modules_count = modules_testcases_objs.count()
         # 设置用例总数初始值为0
         testcases_count = 0
-        for one_dict in interfaces_testcases_objs:
+        for one_dict in modules_testcases_objs:
             testcases_count += one_dict['testcases']
 
 
 
         # 获取套件总数
-
-        item['interfaces'] = interfaces_count
+        item['modules'] = modules_count
         item['testcases'] = testcases_count
-
+        item['testsuites'] = Testsuites.objects.filter(project_id=item['id']).count()
 
         datas_list.append(item)
     return datas_list

@@ -6,6 +6,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.shortcuts import render
 from django.conf import settings
 from django.http import StreamingHttpResponse
 from django.utils.encoding import escape_uri_path
@@ -23,7 +24,7 @@ class ReportsViewSet(mixins.RetrieveModelMixin,
     """
     queryset = Reports.objects.all()
     serializer_class = ReportsSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     ordering_fields = ('id', 'name')
 
     def list(self, request, *args, **kwargs):
@@ -36,12 +37,8 @@ class ReportsViewSet(mixins.RetrieveModelMixin,
     def download(self, *args, **kwargs):
         # 1. 手动创建报告
         instance = self.get_object()
-        html = instance.html
+        report_full_path = instance.html
 
-        report_path = settings.REPORTS_DIR
-        report_full_path = os.path.join(report_path, instance.name) + '.html'
-        with open(report_full_path, 'w', encoding='utf-8') as file:
-            file.write(html)
 
         # 2. 读取创建的报告并返回给前端
         # 如果要提供前端用户能够下载文件, 那么需要在响应头中添加如下字段:
@@ -61,10 +58,7 @@ class ReportsViewSet(mixins.RetrieveModelMixin,
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        datas = serializer.data
-        try:
-            datas['summary'] = json.loads(datas['summary'], encoding='utf-8')
-        except Exception as e:
-            pass
-        return Response(datas)
+        # html = instance.html.split("<html>")[1].split("</html>")[0]
+        with open(instance.html, encoding='utf-8') as stream:
+            report_html = stream.read()
+        return render(request,"report.html", {"report":report_html})

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from projects.models import Projects
-from interfaces.models import Interfaces
+from modules.models import Modules
 from envs.models import Envs
 
 
@@ -17,7 +17,7 @@ def whether_existed_project_id(value):
             raise serializers.ValidationError('所选项目不存在!')
 
 
-def whether_existed_interface_id(value):
+def whether_existed_module_id(value):
     """
     检查项目id是否存在
     :param value:
@@ -25,7 +25,7 @@ def whether_existed_interface_id(value):
     """
     if not isinstance(value, int):
         raise serializers.ValidationError('所选接口有误!')
-    elif not Interfaces.objects.filter(id=value).exists():
+    elif not Modules.objects.filter(id=value).exists():
             raise serializers.ValidationError('所选接口不存在!')
 
 

@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-  @Time : 2020/1/21 21:29 
-  @Auth : 可优
-  @File : utils.py
-  @IDE  : PyCharm
-  @Motto: ABC(Always Be Coding)
-  @Email: keyou100@qq.com
-  @Company: 湖南省零檬信息技术有限公司
-  @Copyright: 柠檬班
--------------------------------------------------
-"""
+
 
 
 def get_file_content(filename):
@@ -37,7 +26,6 @@ def format_output(datas):
         create_time_list = item.get('create_time').split('T')
         first_part = create_time_list[0]
         second_part = create_time_list[1].split('.')[0]
-
         item['create_time'] = first_part + ' ' + second_part
         item['result'] = result
         datas_list.append(item)

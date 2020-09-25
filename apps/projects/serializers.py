@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Projects
 from debugtalks.models import DebugTalks
-from interfaces.models import Interfaces
+from modules.models import Modules
 from utils import validates
 from testcases.models import Testcases
 
@@ -46,18 +46,7 @@ class ProjectNamesModelSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-# class InterfaceNameSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Interfaces
-#         fields = ('id', 'name')
-#
-#
-# class InterfacesByProjectIdSerializer(serializers.ModelSerializer):
-#     interfaces = InterfaceNameSerializer(read_only=True, many=True)
-#
-#     class Meta:
-#         model = Projects
-#         fields = ('id', 'interfaces')
+
 
 class ProjectsRunSerializer(serializers.ModelSerializer):
     """

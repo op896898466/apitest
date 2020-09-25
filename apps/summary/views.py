@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 
 from projects.models import Projects
-from interfaces.models import Interfaces
+from modules.models import Modules
 from testcases.models import Testcases
-from testsuits.models import Testsuits
+from testsuites.models import Testsuites
 from configures.models import Configures
 from envs.models import Envs
 from debugtalks.models import DebugTalks
@@ -28,14 +28,13 @@ class SummaryAPIView(APIView):
         user_info = {
             'username': user.username,
             'role':  '管理员' if user.is_superuser else '普通用户',
-            'date_joined': user.date_joined.strftime('%Y-%m-%d %H:%M:%S') if user.date_joined else '',
-            'last_login': user.last_login.strftime('%Y-%m-%d %H:%M:%S') if user.last_login else '',
+            'date_joined': user.date_joined.strftime('%Y-%m-%d %H:%M:%S') if user.date_joined else ''
         }
 
         projects_count = Projects.objects.count()
-        interfaces_count = Interfaces.objects.count()
+        modules_count = Modules.objects.count()
         testcases_count = Testcases.objects.count()
-        testsuits_count = Testsuits.objects.count()
+        testsuites_count = Testsuites.objects.count()
         configures_count = Configures.objects.count()
         envs_count = Envs.objects.count()
         debug_talks_count = DebugTalks.objects.count()
@@ -53,9 +52,9 @@ class SummaryAPIView(APIView):
 
         statistics = {
             'projects_count': projects_count,
-            'interfaces_count': interfaces_count,
+            'modules_count': modules_count,
             'testcases_count': testcases_count,
-            'testsuits_count': testsuits_count,
+            'testsuites_count': testsuites_count,
             'configures_count': configures_count,
             'envs_count': envs_count,
             'debug_talks_count': debug_talks_count,

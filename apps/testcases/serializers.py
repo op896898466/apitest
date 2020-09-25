@@ -2,11 +2,11 @@ from rest_framework import serializers
 
 from .models import Testcases
 from projects.models import Projects
-from interfaces.models import Interfaces
+from modules.models import Modules
 from utils import validates
 
 
-class InterfaceAnotherSerialzer(serializers.ModelSerializer):
+class ModuleAnotherSerialzer(serializers.ModelSerializer):
     # 所属项目名
     project = serializers.StringRelatedField(label="所属项目名", help_text="所属项目名")
     # 所属项目id
@@ -14,10 +14,10 @@ class InterfaceAnotherSerialzer(serializers.ModelSerializer):
                                    validators=[validates.whether_existed_project_id])
     # 接口id
     iid = serializers.IntegerField(write_only=True, label="接口id", help_text="接口id",
-                                   validators=[validates.whether_existed_interface_id])
+                                   validators=[validates.whether_existed_module_id])
 
     class Meta:
-        model = Interfaces
+        model = Modules
         fields = ('name', 'project', 'pid', 'iid')
         extra_kwargs = {
             'name': {
@@ -31,7 +31,7 @@ class InterfaceAnotherSerialzer(serializers.ModelSerializer):
         :param attrs:
         :return:
         """
-        if not Interfaces.objects.filter(id=attrs['iid'], project_id=attrs['pid']).exists():
+        if not Modules.objects.filter(id=attrs['iid'], project_id=attrs['pid']).exists():
             raise serializers.ValidationError("项目和接口信息不对应!")
         return attrs
 
@@ -40,11 +40,11 @@ class TestcasesSerializer(serializers.ModelSerializer):
     """
     用例序列化器
     """
-    interface = InterfaceAnotherSerialzer(label="所属项目和接口", help_text="所属项目和接口")
+    module = ModuleAnotherSerialzer(label="所属项目和接口", help_text="所属项目和接口")
 
     class Meta:
         model = Testcases
-        fields = ('id', 'name', 'include', 'author', 'request', 'interface')
+        fields = ('id', 'name', 'include', 'author', 'request', 'module','files')
 
         extra_kwargs = {
             'include': {
@@ -56,14 +56,15 @@ class TestcasesSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        interface_dict = validated_data.pop('interface')
-        validated_data['interface_id'] = interface_dict['iid']
+        module_dict = validated_data.pop('module')
+        validated_data['module_id'] = module_dict['iid']
         return Testcases.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        if 'interface' in validated_data:
-            interface_dict = validated_data.pop('interface')
-            validated_data['interface_id'] = interface_dict['iid']
+        print(validated_data)
+        if 'module' in validated_data:
+            module_dict = validated_data.pop('module')
+            validated_data['module_id'] = module_dict['iid']
         return super().update(instance, validated_data)
 
 
@@ -77,4 +78,4 @@ class TestcasesRunSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Testcases
-        fields = ('id', 'env_id')
+        fields = ('env_id',)

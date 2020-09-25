@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from .models import Configures
 from .serializers import ConfiguresSerializer
-from interfaces.models import Interfaces
+from modules.models import Modules
 from utils import handle_datas
 
 
@@ -66,7 +66,7 @@ class ConfiguresViewSet(ModelViewSet):
     @action(methods=['get'], detail=False)
     def names(self,request, *args, **kwargs):
         """
-        Returns a list of all the testcases names by interface id
+        Returns a list of all the testcases names by module id
         """
         configures_objs = Configures.objects.all()
         one_list = []

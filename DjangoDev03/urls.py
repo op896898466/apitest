@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
-
+from django.views.static import serve
+from django.conf import settings
+from django.conf.urls import url
 
 # 全局路由配置信息
 # 1. urlpatterns为固定名称的列表
@@ -28,16 +30,20 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('projects.urls')),
-    path('', include('interfaces.urls')),
+    path('', include('modules.urls')),
     path('', include('reports.urls')),
     path('', include('envs.urls')),
     path('', include('debugtalks.urls')),
-    path('', include('testsuits.urls')),
+    path('', include('testsuites.urls')),
     path('', include('testcases.urls')),
     path('', include('configures.urls')),
     path('', include('summary.urls')),
     path('', include('locusts.urls')),
+    path('', include('interfacemocks.urls')),
+    path('', include('mocks.urls')),
     path('docs/', include_docs_urls(title='测试平台接口文档')),
     path('api/', include('rest_framework.urls')),
-    path('user/', include('users.urls'))
+    path('user/', include('users.urls')),
+    url(r'static/(?P<path>.*)', serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'upload/(?P<path>.*)', serve, {'document_root': settings.UPLOAD_DIR})
 ]

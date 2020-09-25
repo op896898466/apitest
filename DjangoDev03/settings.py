@@ -25,10 +25,10 @@ sys.path.append(os.path.join(BASE_DIR, "apps"))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bv89uqnh8m9il#0zkgs%57z14jtvb_c9cii$+19_dh!#%ivhmp'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 # DEBUG = True
 
 # ALLOWED_HOSTS = ["外网ip", "localhost", "127.0.0.1"]
@@ -52,17 +52,18 @@ INSTALLED_APPS = [
     # 应用名.apps.应用名首字母大写Config
     # 'apps.projects.apps.ProjectsConfig',
     'projects.apps.ProjectsConfig',
-    # 'interfaces',
-    'interfaces.apps.InterfacesConfig',
+    'modules.apps.ModulesConfig',
     'users.apps.UsersConfig',
     'testcases.apps.TestcasesConfig',
     'configures.apps.ConfiguresConfig',
-    'testsuits.apps.TestsuitsConfig',
+    'testsuites.apps.TestsuitesConfig',
     'envs.apps.EnvsConfig',
     'debugtalks.apps.DebugtalksConfig',
     'reports.apps.ReportsConfig',
     'summary.apps.SummaryConfig',
     'locusts.apps.LocustsConfig',
+    'interfacemocks.apps.InterfacemocksConfig',
+    'mocks.apps.MocksConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +81,7 @@ MIDDLEWARE = [
 # CORS_ORIGIN_ALLOW_ALL为True, 指定所有域名(ip)都可以访问后端接口, 默认为False
 CORS_ORIGIN_ALLOW_ALL = True
 
+X_FRAME_OPTIONS = 'ALLOWALL'
 # CORS_ORIGIN_WHITELIST指定能够访问后端接口的ip或域名列表
 # CORS_ORIGIN_WHITELIST = [
 #     "http://127.0.0.1:8080",
@@ -112,8 +114,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DjangoDev03.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
@@ -121,16 +125,18 @@ DATABASES = {
         # 指定数据库引擎
         'ENGINE': 'django.db.backends.mysql',
         # 指定数据库名
-        'NAME': 'dev03_django',
+        'NAME': 'apitest',
+        # 'NAME': 'dev03_django',
         # 'HOST': 'localhost',  # 数据库主机域名或者ip
         'HOST': '127.0.0.1',  # 数据库主机域名或者ip
         # 数据数据用户名
         'USER': 'root',
-        'PASSWORD': '123qwe',
+        'PASSWORD': '******',
         'PORT': 3306  # 数据库的端口
 
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -166,7 +172,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 REST_FRAMEWORK = {
     # 默认响应渲染类
@@ -267,3 +273,6 @@ SUITES_DIR = os.path.join(BASE_DIR, 'suites')
 
 # 1. 创建STATIC_ROOT, 存放静态文件的目录
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+UPLOAD_DIR = os.path.join(BASE_DIR, "upload")
+

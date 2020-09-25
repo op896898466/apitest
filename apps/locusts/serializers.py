@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-  @Time : 2019/12/28 9:54 
-  @Auth : 可优
-  @File : serializers.py.py
-  @IDE  : PyCharm
-  @Motto: ABC(Always Be Coding)
-  @Email: keyou100@qq.com
-  @Company: 湖南省零檬信息技术有限公司
-  @Copyright: 柠檬班
--------------------------------------------------
-"""
+
 from rest_framework import serializers
 from .models import Locusts
 from projects.models import Projects
