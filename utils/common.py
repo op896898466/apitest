@@ -526,8 +526,8 @@ def to_file(file_name, data):
 
 
 def send_email_text(subject, content, filepath, receive_email):
-    sender = "896898466@qq.com"
-    passwd = "xsdmhofeirpcbfhh"
+    sender = ""
+    passwd = ""
     receivers = receive_email  # 收件人邮箱
 
     msgRoot = MIMEMultipart()
