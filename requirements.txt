@@ -44,7 +44,7 @@ mypy-extensions==0.4.3
 mysqlclient @ file:///C:/Users/dell/PycharmProjects/DeployDjango/django_app_docker/DjangoDev03/mysqlclient-1.4.6-cp38-cp38-win32.whl
 psutil==5.7.0
 pycparser==2.20
-Pygments==2.5.2
+Pygments==2.7.4
 PyJWT==1.7.1
 pytz==2019.3
 PyYAML==5.3
