@@ -1,0 +1,11 @@
+{
+ "name": "Duck Token",
+ "website": "-",
+ "description": "-",
+ "explorer": "https://hecoinfo.com/token/0x8dD98Ec83F227F27E730e75C5A5c3dc96496061D",
+ "type": "HRC-20",
+ "symbol": "Duck",
+ "decimals": 18,
+ "status": "active",
+ "id": "0x8dD98Ec83F227F27E730e75C5A5c3dc96496061D"
+} 
