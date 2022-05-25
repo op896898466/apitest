@@ -45,7 +45,7 @@ mysqlclient @ file:///C:/Users/dell/PycharmProjects/DeployDjango/django_app_dock
 psutil==5.7.0
 pycparser==2.20
 Pygments==2.5.2
-PyJWT==1.7.1
+PyJWT==2.4.0
 pytz==2019.3
 PyYAML==5.3
 pyzmq==19.0.1
